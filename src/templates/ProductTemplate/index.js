@@ -3,12 +3,19 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, {useContext, useState, useEffect} from 'react';
 import {graphql} from 'gatsby';
-import {Layout, ImageGallery} from 'components';
+import {Layout, ImageGallery, ProductQuantityAdder} from 'components';
 import {Grid, SelectWrapper, Price}from './styles';
 import CartContext from 'context/CartContext';
 import {navigate, useLocation} from '@reach/router';
 import queryString from 'query-string';
 
+export const query = graphql`
+    query productQuery($shopifyId: String) {
+        shopifyProduct(shopifyId: {eq: $shopifyId}){
+            ...ShopifyProductFields
+        }
+    }
+`;
 
 export default function ProductTemplate(props) {
     const {getProductById} = React.useContext(CartContext);
@@ -40,9 +47,6 @@ export default function ProductTemplate(props) {
 
     };
         
-
-   
-    
     return (
         <Layout>
             <Grid>
@@ -63,37 +67,23 @@ export default function ProductTemplate(props) {
                             </select>
                             </SelectWrapper>
                         )}
-                        {!! selectedVariant && <Price>£
-                            
-                        {selectedVariant?.price}
-                        </Price>}
-                    
+                                {!! selectedVariant && (
+                                <>
+                                    <Price>£{selectedVariant?.price}</Price>
+                                    <ProductQuantityAdder
+                                    available={selectedVariant.available}
+                                    variantId={selectedVariant.id}  />
+                                </>
+                                )}
                         </>
                     )}
                 </div>
-                    <ImageGallery selectedVariantImageId={selectedVariant?.image.id} images={props.data.shopifyProduct.images}/>
+                    <div>
+                        <ImageGallery selectedVariantImageId={selectedVariant?.image.id} images={props.data.shopifyProduct.images}/>
+                    </div>
             </Grid>
         </Layout>
     )
     
 }
 
-export const query = graphql`
-    query productQuery($shopifyId: String) {
-        shopifyProduct(shopifyId: {eq: $shopifyId}){
-            shopifyId
-            title
-            description
-            images {
-                id
-      localFile {
-        childImageSharp {
-          fluid(maxWidth: 300) {
-            ...GatsbyImageSharpFluid_withWebp
-          }
-        }
-      }
-    }
-        }
-    }
-`;
