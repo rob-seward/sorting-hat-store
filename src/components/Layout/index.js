@@ -1,15 +1,15 @@
 import React from 'react';
 import { LayoutWrapper } from './styles';
-
 import {Cart} from '../Cart';
+import {Header} from '../Header';
 
 
 const Layout = ({ children }) => {
   return (
     <>
       <LayoutWrapper>
+        <Header />
         
-        <Cart />
         <main>{children}</main>
       </LayoutWrapper>
     </>

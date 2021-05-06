@@ -23,6 +23,9 @@ export function CartContextProvider({ children }) {
   const [successfulOrder, setSuccessfulOrder] = useState(null);
   const checkoutId = checkout?.id;
 
+  //if the order is place sucessfully it ruturns the completedAt and resets the checkout to nul to 
+  // ready to start again - but the checkout button is still showing at this point - and needs to 
+  // be removed because nothing to put in cart - in Cart add condition render to the button
   React.useEffect(() => {
     const getCheckout = async () => {
       if (checkoutId && typeof window !== 'undefined') {
