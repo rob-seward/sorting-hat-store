@@ -3,11 +3,12 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, {useContext, useState, useEffect} from 'react';
 import {graphql} from 'gatsby';
-import {Layout, ImageGallery, ProductQuantityAdder, Button} from 'components';
+import {SEO, Layout, ImageGallery, ProductQuantityAdder, Button} from 'components';
 import {Grid, SelectWrapper, Price}from './styles';
 import CartContext from 'context/CartContext';
 import {navigate, useLocation} from '@reach/router';
 import queryString from 'query-string';
+
 
 
 export const query = graphql`
@@ -50,6 +51,7 @@ export default function ProductTemplate(props) {
         
     return (
         <Layout>
+            <SEO title={props.data.shopifyProduct.title} description={props.data.shopifyProduct.description}/>
             <Button onClick={()=>navigate(-1)}>Back to product</Button>
             <Grid>
                 <div>
